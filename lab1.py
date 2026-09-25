@@ -79,6 +79,7 @@ def calculate_ssim(img1, img2):
     return ssim(img1, img2, channel_axis=2, win_size=win_size)
 
 def find_best_tile(cell_avg_colors):
+    """Finds the best tile in vectorized operations"""
     # reshape
     diff = cell_avg_colors[:, :, np.newaxis, :] - tile_avg_colors[np.newaxis, np.newaxis, :, :]
     distances = np.sum(diff**2, axis=-1)
