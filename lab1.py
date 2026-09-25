@@ -8,6 +8,7 @@ import gradio as gr
 import time
 from skimage.metrics import structural_similarity as ssim
 import glob
+import streamlit as st
 
 # step 1: get test files
 
@@ -33,24 +34,33 @@ import glob
 
 # Step 5
 
+# For streamlit configuration
+st.set_page_config(page_title="Mosaic Reconstruction Tool", layout="wide")
+
+st.title("Mosaic Reconstruction Tool")
+st.markdown("Upload an image and adjust the tile size slider to view dynamic square mosaic reconstruction.")
+
 # Step 1: Preprocess tile library at startup
 
-tile_folder = "tiles"
-tile_paths = glob.glob(f"{tile_folder}/*.png") + glob.glob(f"{tile_folder}/*.jpg")
+@st.cache_data
+def load_tile_files():
+    tile_folder = "tiles"
+    tile_paths = glob.glob(f"{tile_folder}/*.png") + glob.glob(f"{tile_folder}/*.jpg")
 
-tile_images_pil = []
-tile_avg_colors_list = []
+    tile_images_pil = []
+    tile_avg_colors_list = []
 
-for p in tile_paths:
-    try:
-        img = Image.open(p).convert('RGB')
-        arr = np.array(img)
-        tile_images_pil.append(img)
-        tile_avg_colors_list.append(arr.mean(axis=(0, 1)))
-    except Exception as e:
-        print(f"Error loading tile {p}: {e}")
-    
-tile_avg_colors = np.array(tile_avg_colors_list)
+    for p in tile_paths:
+        try:
+            img = Image.open(p).convert('RGB')
+            arr = np.array(img)
+            tile_images_pil.append(img)
+            tile_avg_colors_list.append(arr.mean(axis=(0, 1)))
+        except Exception as e:
+            print(f"Error loading tile {p}: {e}")
+        
+    tile_avg_colors = np.array(tile_avg_colors_list)
+    return tile_images_pil, tile_avg_colors
 
 # helper functions
 
@@ -217,47 +227,73 @@ def mosaic_construction(image, tile_size):
         
 # step 4
 
-with gr.Blocks(title="Mosaic Reconstruction Tool") as grad:
-    gr.Markdown("# Mosaic Reconstruction Tool")
-    gr.Markdown("Upload an image and adjust the tile size slider to view dynamic square mosaic reconstruction.")
+# with gr.Blocks(title="Mosaic Reconstruction Tool") as grad:
+#     gr.Markdown("# Mosaic Reconstruction Tool")
+#     gr.Markdown("Upload an image and adjust the tile size slider to view dynamic square mosaic reconstruction.")
     
-    with gr.Row():
-        # All inputs on left
-        with gr.Column(scale=1):
-            input_img = gr.Image(type='pil', label='Upload Image')
-            tile_slider = gr.Slider(
-                minimum=4,
-                maximum=128,
-                value=32,
-                step=4,
-                label='Tile Size (px)'
-            )
-            submit_btn = gr.Button("Reconstruct Mosaic", variant="primary")
+#     with gr.Row():
+#         # All inputs on left
+#         with gr.Column(scale=1):
+#             input_img = gr.Image(type='pil', label='Upload Image')
+#             tile_slider = gr.Slider(
+#                 minimum=4,
+#                 maximum=128,
+#                 value=32,
+#                 step=4,
+#                 label='Tile Size (px)'
+#             )
+#             submit_btn = gr.Button("Reconstruct Mosaic", variant="primary")
 
-        # Outputs visualized on right
-        with gr.Column(scale=3):
-            with gr.Row():
-                out_preprocessed = gr.Image(label='Preprocessed Image (Square Crop)')
-                out_segmented = gr.Image(label='Segmented Grid Overlay')
-                out_mosaic = gr.Image(label='Final Mosaic Reconstruction')
+#         # Outputs visualized on right
+#         with gr.Column(scale=3):
+#             with gr.Row():
+#                 out_preprocessed = gr.Image(label='Preprocessed Image (Square Crop)')
+#                 out_segmented = gr.Image(label='Segmented Grid Overlay')
+#                 out_mosaic = gr.Image(label='Final Mosaic Reconstruction')
             
-            # Summary Textbox on bottom
-            out_summary = gr.Textbox(
-                label='Performance & Error Summary', 
-                interactive=False, 
-                lines=8
-            )
+#             # Summary Textbox on bottom
+#             out_summary = gr.Textbox(
+#                 label='Performance & Error Summary', 
+#                 interactive=False, 
+#                 lines=8
+#             )
 
-    inputs = [input_img, tile_slider]
-    outputs = [out_preprocessed, out_segmented, out_mosaic, out_summary]
+#     inputs = [input_img, tile_slider]
+#     outputs = [out_preprocessed, out_segmented, out_mosaic, out_summary]
 
-    submit_btn.click(fn=mosaic_construction, inputs=inputs, outputs=outputs)
-    tile_slider.change(fn=mosaic_construction, inputs=inputs, outputs=outputs)
-    input_img.change(fn=mosaic_construction, inputs=inputs, outputs=outputs)
+#     submit_btn.click(fn=mosaic_construction, inputs=inputs, outputs=outputs)
+#     tile_slider.change(fn=mosaic_construction, inputs=inputs, outputs=outputs)
+#     input_img.change(fn=mosaic_construction, inputs=inputs, outputs=outputs)
     
-# img1 = Image.open('img/cake1.jpg').convert('RGB')
-# mosaic_construction(img1, 32)
+# # img1 = Image.open('img/cake1.jpg').convert('RGB')
+# # mosaic_construction(img1, 32)
     
-if __name__ == "__main__":
-    grad.launch(share=True)
+# if __name__ == "__main__":
+#     grad.launch(share=True)
 
+col_left, col_right = st.columns([1, 2])
+
+with col_left:
+    uploaded_file = st.file_uploader("Upload Image", type=["png", "jpg", "jpeg"])
+    tile_size = st.slider("Tile Size (px)", min_value=8, max_value=128, value=32, step=8)
+
+with col_right:
+    if uploaded_file is not None:
+        input_image = Image.open(uploaded_file)
+        img_cropped, img_segmented, img_mosaic, summary = mosaic_construction(input_image, tile_size)
+        
+        if img_cropped is not None:
+            img_col1, img_col2, img_col3 = st.columns(3)
+            with img_col1:
+                st.image(img_cropped, caption="Square Crop", use_container_width=True)
+            with img_col2:
+                st.image(img_segmented, caption="Segmented Grid Overlay", use_container_width=True)
+            with img_col3:
+                st.image(img_mosaic, caption="Final Mosaic", use_container_width=True)
+                
+            st.text_area("Performance & Quality Metrics", value=summary, height=280)
+        else:
+            st.warning(summary)
+    else:
+    # Notice this is purely Streamlit syntax
+        st.info("Upload an image in the left panel to begin reconstruction.")

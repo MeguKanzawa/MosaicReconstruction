@@ -4,6 +4,19 @@ Megu Kanzawa
 NUID: 003918909
 Date: 9/25/2026
 
+## Methodology
+
+### Packages Used
+
+- PIL (Image): for image extraction, like extracting RGB values
+- Gradio: for the interface
+- time: to measure performance speed
+- sklearn.metrics 
+
+###
+
+###
+
 Using /img/cake4.png image:
 
 ## 16x16

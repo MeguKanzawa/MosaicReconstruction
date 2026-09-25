@@ -2,3 +2,4 @@ gradio
 numpy
 opencv-python
 scikit-image
+streamlit
