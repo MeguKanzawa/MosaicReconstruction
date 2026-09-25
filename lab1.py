@@ -62,6 +62,8 @@ def load_tile_files():
     tile_avg_colors = np.array(tile_avg_colors_list)
     return tile_images_pil, tile_avg_colors
 
+tile_images_pil, tile_avg_colors = load_tile_files()
+
 # helper functions
 
 def calculate_mse(img1, img2):
@@ -72,8 +74,8 @@ def calculate_ssim(img1, img2):
     """Calculates SSIM between two RGB images."""
     min_dim = min(img1.shape[0], img1.shape[1])
     win_size = min(7, min_dim if min_dim % 2 != 0 else min_dim - 1)
-    if win_size < 3: return 0.0
-    # use sklearn metrics for ssim calculation
+    if win_size < 3: 
+        return 0.0
     return ssim(img1, img2, channel_axis=2, win_size=win_size)
 
 def find_best_tile(cell_avg_colors):
@@ -143,9 +145,9 @@ def mosaic_construction(image, tile_size):
     # draw the segments for red grid overlay
     img_segmented = img1_arr_cropped.copy()
     for r in range(1, grid_dim):
-        img_segmented[r * tile_h1 - 1 : r * tile_h1 + 1, :, :] = [255, 0, 0] 
+        img_segmented[r * tile_h1, :, :] = [255, 0, 0]
     for c in range(1, grid_dim):
-        img_segmented[:, c * tile_w1 - 1 : c * tile_w1 + 1, :] = [255, 0, 0]
+        img_segmented[:, c * tile_w1, :] = [255, 0, 0]
 
     # reshape into 5D arr & cell average computation
     blocked_arr1 = img1_arr_cropped.reshape(grid_dim, tile_h1, grid_dim, tile_w1, channels_1)
@@ -182,7 +184,7 @@ def mosaic_construction(image, tile_size):
             c_start, c_end = c * tile_w1, (c + 1) * tile_w1
             mosaic_canvas[r_start:r_end, c_start:c_end, :] = resized_tiles[tile_idx]
     
-    mosaic_img = Image.fromarray(mosaic_canvas).resize((valid_dim, valid_dim))
+    mosaic_img = Image.fromarray(mosaic_canvas)
 
 
     # mosaic_img = Image.fromarray(tile_color_grid).resize(
