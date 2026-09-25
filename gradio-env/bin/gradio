@@ -1,0 +1,6 @@
+#!/Users/megukanzawa/Downloads/CS/Northeastern/CS5130/Labs/Week2/gradio-env/bin/python3.12
+import sys
+from gradio.cli import cli
+if __name__ == '__main__':
+    sys.argv[0] = sys.argv[0].removesuffix('.exe')
+    sys.exit(cli())

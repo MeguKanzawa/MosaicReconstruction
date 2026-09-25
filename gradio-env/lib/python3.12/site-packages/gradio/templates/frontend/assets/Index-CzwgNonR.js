@@ -1,0 +1,1 @@
+import{Gt as e,Wt as t,ht as n,i as r}from"./index-OOWiRlj3.js";import{t as i}from"./src-pyBMyL3K.js";import"./core-C34XJVUg.js";var a=new Set([`$$slots`,`$$events`,`$$legacy`]);function o(o,s){e(s,!0);let c=new i(r(s,a));n(()=>{c.props.value&&c.dispatch(`change`)}),t()}export{o as default};
