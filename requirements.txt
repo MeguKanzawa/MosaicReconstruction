@@ -1,5 +1,12 @@
-gradio
-numpy
-opencv-python
-scikit-image
-streamlit
+# Web app (app.py + mosaic_generator)
+numpy==2.5.3
+pillow==12.3.0
+scipy==1.18.1
+scikit-image==0.26.0
+streamlit==1.67.0
+
+# Baseline (lab1.py imports gradio) and profiling notebook / tests
+gradio==6.28.0
+line_profiler==5.1.0
+matplotlib==3.11.2
+pytest==9.2.0
