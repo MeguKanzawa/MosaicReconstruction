@@ -10,30 +10,6 @@ from skimage.metrics import structural_similarity as ssim
 import glob
 import streamlit as st
 
-# step 1: get test files
-
-# img1 = cv2.imread('img/cake1.jpg')
-# img2 = cv2.imread('img/cake2.jpg')
-# img3 = cv2.imread('img/cake3.jpg')
-# img4 = cv2.imread('img/cake4.jpg')
-# img5 = cv2.imread('img/cake5.jpeg')
-
-# h1, w1, channels1 = img1.shape
-# h2, w2, channels2 = img2.shape
-# h3, w3, channels3 = img3.shape
-# h4, w4, channels4 = img4.shape
-# h5, w5, channels5 = img5.shape
-
-# rows = 32
-# cols = 32
-
-# # repeat for all 5 images
-# # img 1
-# cell_h = h1 // rows
-# cell_w = w1 // cols
-
-# Step 5
-
 # For streamlit configuration
 st.set_page_config(page_title="Mosaic Reconstruction Tool", layout="wide")
 
@@ -41,6 +17,10 @@ st.title("Mosaic Reconstruction Tool")
 st.markdown("Upload an image and adjust the tile size slider to view dynamic square mosaic reconstruction.")
 
 # Step 1: Preprocess tile library at startup
+# globs every .png and .jpg in tiles/, opens each as RGB
+# stores the PIL image and each tile's average color 
+# st.cache_data computes this once only NOT on every slider move
+# result = tile_avg_color(N, 3) array where N = number of tiles
 
 @st.cache_data
 def load_tile_files():
@@ -66,10 +46,13 @@ tile_images_pil, tile_avg_colors = load_tile_files()
 
 # helper functions
 
+# calculates mean squared pixel difference
 def calculate_mse(img1, img2):
     """Calculates Mean Squared Error between two images."""
     return np.mean((img1.astype("float") - img2.astype("float")) ** 2)
 
+# picks an odd window size of at most 7 BEC SSIM requires 
+# an odd window no larger than image
 def calculate_ssim(img1, img2):
     """Calculates SSIM between two RGB images."""
     min_dim = min(img1.shape[0], img1.shape[1])
@@ -78,6 +61,13 @@ def calculate_ssim(img1, img2):
         return 0.0
     return ssim(img1, img2, channel_axis=2, win_size=win_size)
 
+# uses broadcasting
+# cell_avg_colors --> (rows, cols, 3)
+# tile colors --> (1, 1, N, 3)
+# subtracting them gives every cell to tile difference 
+# --> (rows, cols, N, 3)
+# squaring and summing over last axis gives squared euc distance
+# argmin returns closest tile per cell
 def find_best_tile(cell_avg_colors):
     """Finds the best tile in vectorized operations"""
     # reshape
@@ -87,6 +77,8 @@ def find_best_tile(cell_avg_colors):
     return best_tile_indices
 
 # for comparison with looped version
+# does same thing with nested Python loops (rows, cols,tiles)
+# Iterations = rows x cols x N --> SLOW
 def find_best_tile_looped(cell_avg_colors):
     """Explicit nested loop distance calculation (Slow - for Step 6 analysis)."""
     rows, cols, _ = cell_avg_colors.shape
@@ -105,6 +97,24 @@ def find_best_tile_looped(cell_avg_colors):
     return best_indices
 
 # Step 2 - Mosaic Generation
+# 1. converts input to numpy array
+# 2. works out how many whole tiles fit, taking smaller of the row/col
+#   so the mosaic is a square
+# 3. center crops to grid_dim * tile_size square
+# 4. makes copy with red lines for tile_size pixels for seg view
+# 5. computes per-cell average color with a reshape
+#   reshape(g, th, g, tw, C) = splits each axis into which cell,
+#   which pixel, within cell
+#   transpose regroups array into (cell_row, cell_col, pixel_row,
+#   pixel_col, C)
+#   averages over axis 2 and 3 to give one color per cell
+# 6. runs both vectorized and looped search + times of each,
+# 7. resizes every tile in library to tile_size x tile_size
+#   pastes chosen tile into each cell of blank canvas with 
+#   double loop
+# 8. computes MSE and SSIM between cropped original vs mosaic
+#   returns cropped, segmented, mosaic, summary
+
 def mosaic_construction(image, tile_size):
     """
     Constructs a mosaic visualization from an input image and tile size.
@@ -155,11 +165,7 @@ def mosaic_construction(image, tile_size):
     # groups into respective boundaries
     blocked_arr = blocked_arr1.transpose(0,2,1,3,4)
 
-    # Step 3
-
-    # compute average color within tiles
-    # tile_color_grid = np.mean(blocked_arr, axis=(2,3)).astype(np.uint8)
-        
+       
     cell_avg_colors = np.mean(blocked_arr, axis=(2,3))
     
     t0 = time.time()
@@ -187,21 +193,12 @@ def mosaic_construction(image, tile_size):
     
     mosaic_img = Image.fromarray(mosaic_canvas)
 
-
-    # mosaic_img = Image.fromarray(tile_color_grid).resize(
-    #     (valid_dim, valid_dim), resample=Image.Resampling.NEAREST
-    # )
-    
-    # mosaic_img_arr = np.array(mosaic_img)
-    
     mse_val = calculate_mse(img1_arr_cropped, mosaic_canvas)
     ssim_val = calculate_ssim(img1_arr_cropped, mosaic_canvas)
     
     total_time = (time.time() - start_time) * 1000
     speedup = looped_time / max(vectorized_time, 0.0001)
-    
-    # metrics_text = f"Mean Squared Error (MSE): {mse_val:.2f}\nStructural Similarity Index (SSIM): {ssim_val:.4f}"
-    
+        
     summary_text = (
         f"RECONSTRUCTION SUMMARY\n"
         f"----------------------\n"
@@ -228,52 +225,6 @@ def mosaic_construction(image, tile_size):
         summary_text
     )
         
-# step 4
-
-# with gr.Blocks(title="Mosaic Reconstruction Tool") as grad:
-#     gr.Markdown("# Mosaic Reconstruction Tool")
-#     gr.Markdown("Upload an image and adjust the tile size slider to view dynamic square mosaic reconstruction.")
-    
-#     with gr.Row():
-#         # All inputs on left
-#         with gr.Column(scale=1):
-#             input_img = gr.Image(type='pil', label='Upload Image')
-#             tile_slider = gr.Slider(
-#                 minimum=4,
-#                 maximum=128,
-#                 value=32,
-#                 step=4,
-#                 label='Tile Size (px)'
-#             )
-#             submit_btn = gr.Button("Reconstruct Mosaic", variant="primary")
-
-#         # Outputs visualized on right
-#         with gr.Column(scale=3):
-#             with gr.Row():
-#                 out_preprocessed = gr.Image(label='Preprocessed Image (Square Crop)')
-#                 out_segmented = gr.Image(label='Segmented Grid Overlay')
-#                 out_mosaic = gr.Image(label='Final Mosaic Reconstruction')
-            
-#             # Summary Textbox on bottom
-#             out_summary = gr.Textbox(
-#                 label='Performance & Error Summary', 
-#                 interactive=False, 
-#                 lines=8
-#             )
-
-#     inputs = [input_img, tile_slider]
-#     outputs = [out_preprocessed, out_segmented, out_mosaic, out_summary]
-
-#     submit_btn.click(fn=mosaic_construction, inputs=inputs, outputs=outputs)
-#     tile_slider.change(fn=mosaic_construction, inputs=inputs, outputs=outputs)
-#     input_img.change(fn=mosaic_construction, inputs=inputs, outputs=outputs)
-    
-# # img1 = Image.open('img/cake1.jpg').convert('RGB')
-# # mosaic_construction(img1, 32)
-    
-# if __name__ == "__main__":
-#     grad.launch(share=True)
-
 col_left, col_right = st.columns([1, 2])
 
 with col_left:
