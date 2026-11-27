@@ -28,8 +28,8 @@ requirements.txt
 Requires Python 3.10 or newer.
 
 ```bash
-git clone <your-repo-url>
-cd <your-repo>
+git clone https://github.com/MeguKanzawa/MosaicReconstruction.git
+cd MosaicReconstruction
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
