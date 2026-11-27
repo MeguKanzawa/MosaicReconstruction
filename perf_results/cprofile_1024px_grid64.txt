@@ -1,0 +1,92 @@
+
+### 1024x1024 image, 64x64 grid (16 px tiles)
+
+--- sorted by cumulative time (time in function + everything it calls) ---
+         346505 function calls (346501 primitive calls) in 0.748 seconds
+
+   Ordered by: cumulative time
+   List reduced from 202 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+      2/1    0.005    0.003    0.746    0.746 lab1.py:118(mosaic_construction)
+        1    0.000    0.000    0.510    0.510 lab1.py:56(calculate_ssim)
+      4/1    0.016    0.004    0.510    0.510 _structural_similarity.py:15(structural_similarity)
+       15    0.000    0.000    0.491    0.033 _filters.py:1552(uniform_filter)
+       30    0.000    0.000    0.488    0.016 _filters.py:1501(uniform_filter1d)
+       30    0.487    0.016    0.487    0.016 {built-in method scipy.ndimage._nd_image.uniform_filter1d}
+        2    0.074    0.037    0.190    0.095 base_events.py:1922(_run_once)
+    57345    0.028    0.000    0.116    0.000 fromnumeric.py:2342(sum)
+    57345    0.043    0.000    0.083    0.000 fromnumeric.py:66(_wrapreduction)
+    57354    0.048    0.000    0.048    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+       14    0.000    0.000    0.019    0.001 Image.py:2329(resize)
+       14    0.019    0.001    0.019    0.001 {method 'resize' of 'ImagingCore' objects}
+        6    0.000    0.000    0.014    0.002 _methods.py:115(_mean)
+        2    0.000    0.000    0.013    0.006 fromnumeric.py:3737(mean)
+    57350    0.006    0.000    0.006    0.000 {method 'items' of 'dict' objects}
+    57649    0.004    0.000    0.005    0.000 {built-in method builtins.isinstance}
+    57345    0.004    0.000    0.004    0.000 fromnumeric.py:2337(_sum_dispatcher)
+        1    0.001    0.001    0.004    0.004 lab1.py:82(find_best_tile_looped)
+        8    0.003    0.000    0.003    0.000 {method 'astype' of 'numpy.ndarray' objects}
+       45    0.000    0.000    0.003    0.000 _ni_support.py:78(_get_output)
+
+
+
+--- sorted by internal time (time in the function body itself) ---
+         346505 function calls (346501 primitive calls) in 0.748 seconds
+
+   Ordered by: internal time
+   List reduced from 202 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+       30    0.487    0.016    0.487    0.016 {built-in method scipy.ndimage._nd_image.uniform_filter1d}
+        2    0.074    0.037    0.190    0.095 base_events.py:1922(_run_once)
+    57354    0.048    0.000    0.048    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+    57345    0.043    0.000    0.083    0.000 fromnumeric.py:66(_wrapreduction)
+    57345    0.028    0.000    0.116    0.000 fromnumeric.py:2342(sum)
+       14    0.019    0.001    0.019    0.001 {method 'resize' of 'ImagingCore' objects}
+      4/1    0.016    0.004    0.510    0.510 _structural_similarity.py:15(structural_similarity)
+    57350    0.006    0.000    0.006    0.000 {method 'items' of 'dict' objects}
+      2/1    0.005    0.003    0.746    0.746 lab1.py:118(mosaic_construction)
+    57649    0.004    0.000    0.005    0.000 {built-in method builtins.isinstance}
+    57345    0.004    0.000    0.004    0.000 fromnumeric.py:2337(_sum_dispatcher)
+        8    0.003    0.000    0.003    0.000 {method 'astype' of 'numpy.ndarray' objects}
+       17    0.003    0.000    0.003    0.000 {built-in method numpy.zeros}
+        1    0.001    0.001    0.004    0.004 lab1.py:82(find_best_tile_looped)
+        1    0.001    0.001    0.003    0.003 lab1.py:50(calculate_mse)
+        1    0.001    0.001    0.001    0.001 lab1.py:71(find_best_tile)
+        3    0.001    0.000    0.001    0.000 {method 'decode' of 'ImagingDecoder' objects}
+        3    0.000    0.000    0.000    0.000 {built-in method PIL._imaging.fill}
+       45    0.000    0.000    0.003    0.000 _ni_support.py:78(_get_output)
+       63    0.000    0.000    0.000    0.000 {method 'encode' of 'ImagingEncoder' objects}
+
+
+
+--- sorted by call count (look for things called far more than expected) ---
+         346505 function calls (346501 primitive calls) in 0.748 seconds
+
+   Ordered by: call count
+   List reduced from 202 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+    57649    0.004    0.000    0.005    0.000 {built-in method builtins.isinstance}
+    57354    0.048    0.000    0.048    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+    57350    0.006    0.000    0.006    0.000 {method 'items' of 'dict' objects}
+    57345    0.028    0.000    0.116    0.000 fromnumeric.py:2342(sum)
+    57345    0.004    0.000    0.004    0.000 fromnumeric.py:2337(_sum_dispatcher)
+    57345    0.043    0.000    0.083    0.000 fromnumeric.py:66(_wrapreduction)
+      161    0.000    0.000    0.000    0.000 Image.py:662(size)
+       97    0.000    0.000    0.000    0.000 {built-in method builtins.len}
+       92    0.000    0.000    0.000    0.000 {built-in method builtins.issubclass}
+       92    0.000    0.000    0.000    0.000 Image.py:666(mode)
+       78    0.000    0.000    0.000    0.000 {built-in method numpy.asarray}
+       67    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
+       64    0.000    0.000    0.000    0.000 Image.py:643(im)
+       63    0.000    0.000    0.000    0.000 {method 'encode' of 'ImagingEncoder' objects}
+       48    0.000    0.000    0.000    0.000 numerictypes.py:230(issubclass_)
+       45    0.000    0.000    0.000    0.000 _ni_support.py:62(_normalize_sequence)
+       45    0.000    0.000    0.003    0.000 _ni_support.py:78(_get_output)
+       36    0.000    0.000    0.000    0.000 Image.py:654(width)
+       36    0.000    0.000    0.000    0.000 Image.py:658(height)
+       31    0.000    0.000    0.000    0.000 Image.py:670(readonly)
+
+

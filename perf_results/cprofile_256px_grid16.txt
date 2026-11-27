@@ -1,0 +1,92 @@
+
+### 256x256 image, 16x16 grid (16 px tiles)
+
+--- sorted by cumulative time (time in function + everything it calls) ---
+         24027 function calls (24022 primitive calls) in 0.048 seconds
+
+   Ordered by: cumulative time
+   List reduced from 207 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.048    0.048 lab1.py:118(mosaic_construction)
+       14    0.000    0.000    0.020    0.001 Image.py:2329(resize)
+       14    0.019    0.001    0.019    0.001 {method 'resize' of 'ImagingCore' objects}
+        1    0.000    0.000    0.014    0.014 lab1.py:56(calculate_ssim)
+      4/1    0.001    0.000    0.014    0.014 _structural_similarity.py:15(structural_similarity)
+       15    0.000    0.000    0.013    0.001 _filters.py:1552(uniform_filter)
+       30    0.000    0.000    0.012    0.000 _filters.py:1501(uniform_filter1d)
+       30    0.012    0.000    0.012    0.000 {built-in method scipy.ndimage._nd_image.uniform_filter1d}
+        1    0.005    0.005    0.011    0.011 lab1.py:82(find_best_tile_looped)
+     3585    0.002    0.000    0.006    0.000 fromnumeric.py:2342(sum)
+     3585    0.002    0.000    0.004    0.000 fromnumeric.py:66(_wrapreduction)
+     3594    0.003    0.000    0.003    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+        6    0.000    0.000    0.001    0.000 _methods.py:115(_mean)
+        2    0.000    0.000    0.001    0.000 fromnumeric.py:3737(mean)
+       18    0.000    0.000    0.000    0.000 {built-in method numpy.array}
+       15    0.000    0.000    0.000    0.000 Image.py:804(__array_interface__)
+     3588    0.000    0.000    0.000    0.000 {method 'items' of 'dict' objects}
+     3953    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+       15    0.000    0.000    0.000    0.000 Image.py:842(tobytes)
+       45    0.000    0.000    0.000    0.000 _ni_support.py:78(_get_output)
+
+
+
+--- sorted by internal time (time in the function body itself) ---
+         24027 function calls (24022 primitive calls) in 0.048 seconds
+
+   Ordered by: internal time
+   List reduced from 207 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+       14    0.019    0.001    0.019    0.001 {method 'resize' of 'ImagingCore' objects}
+       30    0.012    0.000    0.012    0.000 {built-in method scipy.ndimage._nd_image.uniform_filter1d}
+        1    0.005    0.005    0.011    0.011 lab1.py:82(find_best_tile_looped)
+     3594    0.003    0.000    0.003    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+     3585    0.002    0.000    0.004    0.000 fromnumeric.py:66(_wrapreduction)
+     3585    0.002    0.000    0.006    0.000 fromnumeric.py:2342(sum)
+      4/1    0.001    0.000    0.014    0.014 _structural_similarity.py:15(structural_similarity)
+     3588    0.000    0.000    0.000    0.000 {method 'items' of 'dict' objects}
+     3953    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+        1    0.000    0.000    0.048    0.048 lab1.py:118(mosaic_construction)
+        8    0.000    0.000    0.000    0.000 {method 'astype' of 'numpy.ndarray' objects}
+     3585    0.000    0.000    0.000    0.000 fromnumeric.py:2337(_sum_dispatcher)
+       17    0.000    0.000    0.000    0.000 {built-in method numpy.zeros}
+       18    0.000    0.000    0.000    0.000 {built-in method numpy.array}
+       15    0.000    0.000    0.000    0.000 Image.py:842(tobytes)
+        1    0.000    0.000    0.000    0.000 lab1.py:50(calculate_mse)
+        5    0.000    0.000    0.000    0.000 attrsettr.py:66(_get_attr_opt)
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        2    0.000    0.000    0.000    0.000 {method 'control' of 'select.kqueue' objects}
+       45    0.000    0.000    0.000    0.000 _ni_support.py:78(_get_output)
+
+
+
+--- sorted by call count (look for things called far more than expected) ---
+         24027 function calls (24022 primitive calls) in 0.048 seconds
+
+   Ordered by: call count
+   List reduced from 207 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     3953    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+     3594    0.003    0.000    0.003    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+     3588    0.000    0.000    0.000    0.000 {method 'items' of 'dict' objects}
+     3585    0.002    0.000    0.006    0.000 fromnumeric.py:2342(sum)
+     3585    0.000    0.000    0.000    0.000 fromnumeric.py:2337(_sum_dispatcher)
+     3585    0.002    0.000    0.004    0.000 fromnumeric.py:66(_wrapreduction)
+      161    0.000    0.000    0.000    0.000 Image.py:662(size)
+       94    0.000    0.000    0.000    0.000 {built-in method builtins.len}
+       92    0.000    0.000    0.000    0.000 {built-in method builtins.issubclass}
+       92    0.000    0.000    0.000    0.000 Image.py:666(mode)
+       78    0.000    0.000    0.000    0.000 {built-in method numpy.asarray}
+       66    0.000    0.000    0.000    0.000 enum.py:1543(_get_value)
+       64    0.000    0.000    0.000    0.000 Image.py:643(im)
+       48    0.000    0.000    0.000    0.000 numerictypes.py:230(issubclass_)
+       45    0.000    0.000    0.000    0.000 _ni_support.py:62(_normalize_sequence)
+       45    0.000    0.000    0.000    0.000 _ni_support.py:78(_get_output)
+       36    0.000    0.000    0.000    0.000 Image.py:654(width)
+       36    0.000    0.000    0.000    0.000 Image.py:658(height)
+       31    0.000    0.000    0.000    0.000 Image.py:670(readonly)
+       31    0.000    0.000    0.000    0.000 {method 'pixel_access' of 'ImagingCore' objects}
+
+

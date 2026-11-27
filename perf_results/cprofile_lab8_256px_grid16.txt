@@ -1,0 +1,62 @@
+
+### lab8: 256x256 image, 16x16 grid (16 px tiles)
+
+--- sorted by cumulative time ---
+         1151 function calls (1147 primitive calls) in 0.014 seconds
+
+   Ordered by: cumulative time
+   List reduced from 125 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.014    0.014 lab8.py:329(mosaic_construction)
+        1    0.000    0.000    0.014    0.014 lab8.py:254(build_mosaic)
+        1    0.000    0.000    0.013    0.013 lab8.py:143(calculate_ssim)
+      4/1    0.001    0.000    0.013    0.013 _structural_similarity.py:15(structural_similarity)
+       15    0.000    0.000    0.012    0.001 _filters.py:1552(uniform_filter)
+       30    0.000    0.000    0.011    0.000 _filters.py:1501(uniform_filter1d)
+       30    0.011    0.000    0.011    0.000 {built-in method scipy.ndimage._nd_image.uniform_filter1d}
+       45    0.000    0.000    0.000    0.000 _ni_support.py:78(_get_output)
+        3    0.000    0.000    0.000    0.000 Image.py:3378(fromarray)
+        3    0.000    0.000    0.000    0.000 Image.py:3288(frombuffer)
+        3    0.000    0.000    0.000    0.000 Image.py:3242(frombytes)
+       11    0.000    0.000    0.000    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+        1    0.000    0.000    0.000    0.000 lab8.py:137(calculate_mse)
+       15    0.000    0.000    0.000    0.000 {built-in method numpy.zeros}
+        1    0.000    0.000    0.000    0.000 lab8.py:115(nearest)
+        1    0.000    0.000    0.000    0.000 lab8.py:189(cell_average_colors)
+        6    0.000    0.000    0.000    0.000 {method 'astype' of 'numpy.ndarray' objects}
+        4    0.000    0.000    0.000    0.000 {method 'mean' of 'numpy.ndarray' objects}
+        2    0.000    0.000    0.000    0.000 {method 'sum' of 'numpy.ndarray' objects}
+        2    0.000    0.000    0.000    0.000 _methods.py:47(_sum)
+
+
+
+--- sorted by internal time ---
+         1151 function calls (1147 primitive calls) in 0.014 seconds
+
+   Ordered by: internal time
+   List reduced from 125 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+       30    0.011    0.000    0.011    0.000 {built-in method scipy.ndimage._nd_image.uniform_filter1d}
+      4/1    0.001    0.000    0.013    0.013 _structural_similarity.py:15(structural_similarity)
+       11    0.000    0.000    0.000    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+        1    0.000    0.000    0.000    0.000 lab8.py:137(calculate_mse)
+       15    0.000    0.000    0.000    0.000 {built-in method numpy.zeros}
+        6    0.000    0.000    0.000    0.000 {method 'astype' of 'numpy.ndarray' objects}
+        1    0.000    0.000    0.000    0.000 lab8.py:115(nearest)
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        3    0.000    0.000    0.000    0.000 {method 'decode' of 'ImagingDecoder' objects}
+        3    0.000    0.000    0.000    0.000 {built-in method PIL._imaging.fill}
+       15    0.000    0.000    0.012    0.001 _filters.py:1552(uniform_filter)
+       45    0.000    0.000    0.000    0.000 _ni_support.py:78(_get_output)
+        1    0.000    0.000    0.000    0.000 lab8.py:181(draw_grid)
+        3    0.000    0.000    0.000    0.000 Image.py:3378(fromarray)
+       30    0.000    0.000    0.011    0.000 _filters.py:1501(uniform_filter1d)
+        6    0.000    0.000    0.000    0.000 {method 'reshape' of 'numpy.ndarray' objects}
+        1    0.000    0.000    0.000    0.000 lab8.py:296(format_summary)
+      146    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+        1    0.000    0.000    0.000    0.000 Image.py:842(tobytes)
+        3    0.000    0.000    0.000    0.000 arraycrop.py:12(crop)
+
+

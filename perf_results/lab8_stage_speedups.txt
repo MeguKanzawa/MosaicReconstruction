@@ -1,0 +1,46 @@
+
+==============================================================================
+PART 5c: SPEEDUP PER OPTIMIZATION (mean of 3 runs, times in ms)
+==============================================================================
+
+### 256x256 image, 16x16 grid (16 px tiles)
+Stage               Baseline     Lab 8   Speedup   What changed
+---------------------------------------------------------------------------------------------
+Convert to array       0.053     0.034      1.6x   skip the extra copy when the image is already RGB
+Crop + red grid        0.065     0.047      1.4x   two slice assignments instead of loops
+Cell averages          0.861     0.112      7.7x   exact uint32 sums, rows first, no transpose
+Tile search            7.547     0.109     69.2x   k-d tree built once vs triple Python loop
+Resize tiles          18.333     0.001  25631.3x   resized once per tile size, then cached
+Paste tiles            0.171     0.041      4.2x   one fancy-indexing step instead of a double loop
+Convert to PIL         0.087     0.100      0.9x   unchanged
+MSE                    0.198     0.168      1.2x   one float64 pass + BLAS dot product
+SSIM                  12.870    12.889      1.0x   unchanged (scikit-image)
+Total                 40.185    13.501      3.0x
+
+### 512x512 image, 32x32 grid (16 px tiles)
+Stage               Baseline     Lab 8   Speedup   What changed
+---------------------------------------------------------------------------------------------
+Convert to array       0.275     0.113      2.4x   skip the extra copy when the image is already RGB
+Crop + red grid        0.216     0.184      1.2x   two slice assignments instead of loops
+Cell averages          3.453     0.420      8.2x   exact uint32 sums, rows first, no transpose
+Tile search           30.151     0.339     89.0x   k-d tree built once vs triple Python loop
+Resize tiles          19.734     0.001  14606.2x   resized once per tile size, then cached
+Paste tiles            0.748     0.137      5.5x   one fancy-indexing step instead of a double loop
+Convert to PIL         0.360     0.296      1.2x   unchanged
+MSE                    0.819     0.666      1.2x   one float64 pass + BLAS dot product
+SSIM                  75.113    70.500      1.1x   unchanged (scikit-image)
+Total                130.868    72.656      1.8x
+
+### 1024x1024 image, 64x64 grid (16 px tiles)
+Stage               Baseline     Lab 8   Speedup   What changed
+---------------------------------------------------------------------------------------------
+Convert to array       0.624     0.532      1.2x   skip the extra copy when the image is already RGB
+Crop + red grid        0.861     0.889      1.0x   two slice assignments instead of loops
+Cell averages         14.349     1.830      7.8x   exact uint32 sums, rows first, no transpose
+Tile search          127.844     1.144    111.8x   k-d tree built once vs triple Python loop
+Resize tiles          20.109     0.002  12049.2x   resized once per tile size, then cached
+Paste tiles            2.883     0.529      5.4x   one fancy-indexing step instead of a double loop
+Convert to PIL         0.853     1.243      0.7x   unchanged
+MSE                    3.269     3.470      0.9x   one float64 pass + BLAS dot product
+SSIM                 503.114   483.585      1.0x   unchanged (scikit-image)
+Total                673.906   493.224      1.4x

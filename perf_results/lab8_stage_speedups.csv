@@ -1,0 +1,28 @@
+image_size,grid_size,stage,baseline_ms,lab8_ms,speedup,change
+256,16,Convert to array,0.0526,0.0336,1.6,skip the extra copy when the image is already RGB
+256,16,Crop + red grid,0.0654,0.0467,1.4,two slice assignments instead of loops
+256,16,Cell averages,0.8606,0.1124,7.7,"exact uint32 sums, rows first, no transpose"
+256,16,Tile search,7.5473,0.109,69.2,k-d tree built once vs triple Python loop
+256,16,Resize tiles,18.333,0.0007,25631.3,"resized once per tile size, then cached"
+256,16,Paste tiles,0.1707,0.0406,4.2,one fancy-indexing step instead of a double loop
+256,16,Convert to PIL,0.0867,0.1003,0.9,unchanged
+256,16,MSE,0.1983,0.1683,1.2,one float64 pass + BLAS dot product
+256,16,SSIM,12.87,12.8893,1.0,unchanged (scikit-image)
+512,32,Convert to array,0.2751,0.1129,2.4,skip the extra copy when the image is already RGB
+512,32,Crop + red grid,0.2155,0.1841,1.2,two slice assignments instead of loops
+512,32,Cell averages,3.453,0.4203,8.2,"exact uint32 sums, rows first, no transpose"
+512,32,Tile search,30.1511,0.3386,89.0,k-d tree built once vs triple Python loop
+512,32,Resize tiles,19.7336,0.0014,14606.2,"resized once per tile size, then cached"
+512,32,Paste tiles,0.748,0.137,5.5,one fancy-indexing step instead of a double loop
+512,32,Convert to PIL,0.3603,0.296,1.2,unchanged
+512,32,MSE,0.8186,0.6656,1.2,one float64 pass + BLAS dot product
+512,32,SSIM,75.1127,70.5004,1.1,unchanged (scikit-image)
+1024,64,Convert to array,0.6242,0.5317,1.2,skip the extra copy when the image is already RGB
+1024,64,Crop + red grid,0.8608,0.8894,1.0,two slice assignments instead of loops
+1024,64,Cell averages,14.3486,1.83,7.8,"exact uint32 sums, rows first, no transpose"
+1024,64,Tile search,127.8441,1.1439,111.8,k-d tree built once vs triple Python loop
+1024,64,Resize tiles,20.1093,0.0017,12049.2,"resized once per tile size, then cached"
+1024,64,Paste tiles,2.8827,0.529,5.4,one fancy-indexing step instead of a double loop
+1024,64,Convert to PIL,0.8527,1.2427,0.7,unchanged
+1024,64,MSE,3.269,3.4701,0.9,one float64 pass + BLAS dot product
+1024,64,SSIM,503.1141,483.5852,1.0,unchanged (scikit-image)
