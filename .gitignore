@@ -6,3 +6,10 @@ lab8_report_full.md
 lab8_report_preview.pdf
 perf_results/report_tables.md
 __pycache__/
+demo_video_script.md
+gradio-env/
+.venv/
+venv/
+__pycache__/
+.ipynb_checkpoints/
+.DS_Store

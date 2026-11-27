@@ -140,7 +140,7 @@ Defaults live in `mosaic_generator/config.py`: tile folder and file types, resiz
 
 ## Why Streamlit
 
-*(Adjust to your situation.)* The web interface uses Streamlit, as in Lab 1. It reruns the script on every slider move, which suits a live preview, and `st.cache_resource` keeps the tile library in memory across reruns, so tiles are read from disk only once.
+The web interface uses Streamlit, as in Lab 1. It reruns the script on every slider move, which suits a live preview, and `st.cache_resource` keeps the tile library in memory across reruns, so tiles are read from disk only once.
 
 ## Deployment (Streamlit Community Cloud)
 
