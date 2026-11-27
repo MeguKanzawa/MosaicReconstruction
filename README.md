@@ -4,7 +4,7 @@ Turns a photo into a mosaic made of small tile images. Each grid cell of the pho
 
 This is the Lab 8 version: the Lab 1 single-file app, optimized for speed and refactored into a package (`mosaic_generator`) with a Streamlit web interface.
 
-**Live app:** <https://mugk-mosaicreconstruction.streamlit.app/> *(replace with your deployed link)*
+**Live app:** <https://mugk-mosaicreconstruction.streamlit.app/>
 
 ## Project structure
 
